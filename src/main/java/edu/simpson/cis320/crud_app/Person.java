@@ -6,6 +6,7 @@ public class Person {
     private String last;
     private String phone;
     private String birthday;
+    private String email;
 
     public int getId() {return id; }
     public void setId(int id) { this.id = id; }
@@ -21,6 +22,9 @@ public class Person {
 
     public String getBirthday() { return birthday; }
     public void setBirthday(String birthday) { this.birthday = birthday; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
     /* Add additional getters and setters for each field.
        Just follow the same pattern. */
