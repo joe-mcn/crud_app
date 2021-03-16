@@ -3,6 +3,24 @@
 function htmlSafe(data) {
     return data.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;");
 }
+
+function formatPhoneNumber(phoneNumberString){
+    let cleaned = phoneNumberString.replace(/\D/g, '');
+    let match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+
+    if (match) {
+        return '(' + match[1] + ') ' + match[2] + '-' + match[3];
+    }
+    return phoneNumberString;
+}
+
+function getJSDateFromSQLDate(sqlDate) {
+    let cleaned = sqlDate.replace(/\D/g, '');
+    let match = cleaned.match(/^(\d{4})(\d{2})(\d{2})$/);
+    let resultDate = new Date(match[1], match[2], match[3]);
+    return resultDate;
+}
+
 function updateTable() {
     // Here's where your code is going to go.
     console.log("updateTable called");
@@ -14,21 +32,25 @@ function updateTable() {
     // Function to call when we are done
     $.getJSON(url, null, function(json_result) {
         //Remove "no data"
-        $('#datatable tr:last').remove()
+        $('#datatable tr').remove()
         for (let i = 0; i < json_result.length; i++) {
             //Adding the data to table
+
+            let birthdayDate = getJSDateFromSQLDate(json_result[i].birthday);
+            let birthdayString = birthdayDate.toLocaleDateString();
+
             $('#datatable tbody:last').append('<tr><td>'
                 +json_result[i].id
                 +'</td><td>'
-                +htmlSafe(json_result[i].first)
+                +htmlSafe(json_result[i].firstName)
                 +'</td><td>'
-                +htmlSafe(json_result[i].last)
+                +htmlSafe(json_result[i].lastName)
                 +'</td><td>'
-                +htmlSafe(json_result[i].phone)
+                +formatPhoneNumber(htmlSafe(json_result[i].phone))
                 +'</td><td>'
                 +htmlSafe(json_result[i].email)
                 +'</td><td>'
-                +htmlSafe(json_result[i].birthday)
+                +htmlSafe(birthdayString)
                 +'</td></tr>'
                 );
             }
@@ -37,3 +59,151 @@ function updateTable() {
 }
 // Call your code.
 updateTable();
+
+function showDialogAdd() {
+    console.log("ADD ITEM")
+
+    // Show the hidden dialog
+    $('#myModal').modal('show');
+
+    // Empty fields
+    $('#id').val("");
+    $('#firstName').val("");
+    $('#firstName').removeClass("is-invalid");
+    $('#firstName').removeClass("is-valid");
+    $('#lastname').val("");
+    $('#lastname').removeClass("is-invalid");
+    $('#lastname').removeClass("is-valid");
+    $('#birthday').val("");
+    $('#birthday').removeClass("is-invalid");
+    $('#birthday').removeClass("is-valid");
+    $('#phone').val("");
+    $('#phone').removeClass("is-invalid");
+    $('#phone').removeClass("is-valid");
+    $('#email').val("");
+    $('#email').removeClass("is-invalid");
+    $('#email').removeClass("is-valid");
+}
+
+// There's a button in the form with the ID "addItem"
+// Associate the function showDialogAdd with it.
+let addItemButton = $('#addItem');
+addItemButton.on("click", showDialogAdd);
+
+function saveChanges(){
+    let IsValid = true;
+    console.log("Saved Changes")
+    //First Name
+    let firstName = $('#firstName').val();
+    console.log("First name: " + firstName);
+    // Create the regular expression
+    let reg = /^[A-Za-z]{1,10}$/;
+    // Set style for outline of form field
+// This is a VALID field
+    if (reg.test(firstName)) {
+        $('#firstName').removeClass("is-invalid");
+        $('#firstName').addClass("is-valid");
+    }
+    /* etc. */
+// This is an INVALID field
+    else {
+        $('#firstName').removeClass("is-valid");
+        $('#firstName').addClass("is-invalid");
+        IsValid = false;
+    }
+    //Last Name
+    let lastName = $('#lastname').val();
+    console.log("Last name: " + lastName);
+    // Create the regular expression
+    // Set style for outline of form field
+// This is a VALID field
+    if (reg.test(lastName)) {
+        $('#lastname').removeClass("is-invalid");
+        $('#lastname').addClass("is-valid");
+    }
+        /* etc. */
+// This is an INVALID field
+    else {
+        $('#lastname').removeClass("is-valid");
+        $('#lastname').addClass("is-invalid");
+        IsValid = false;
+    }
+
+    //Email
+    let email = $('#email').val();
+    console.log("Email: " + email);
+    // Create the regular expression
+    let emailCheck = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z]{3})+$/;
+    // Set style for outline of form field
+// This is a VALID field
+    if (emailCheck.test(email)) {
+        $('#email').removeClass("is-invalid");
+        $('#email').addClass("is-valid");
+    }
+        /* etc. */
+// This is an INVALID field
+    else {
+        $('#email').removeClass("is-valid");
+        $('#email').addClass("is-invalid");
+        IsValid = false;
+    }
+    //Phone
+    let phone = $('#phone').val();
+    console.log("Phone: " + phone);
+    // Create the regular expression
+    let phoneCheck = /^[0-9]{10}$/;
+    // Set style for outline of form field
+// This is a VALID field
+    if (phoneCheck.test(phone)) {
+        $('#phone').removeClass("is-invalid");
+        $('#phone').addClass("is-valid");
+    }
+        /* etc. */
+// This is an INVALID field
+    else {
+        $('#phone').removeClass("is-valid");
+        $('#phone').addClass("is-invalid");
+        IsValid = false;
+    }
+    //Phone
+    let birthday = $('#birthday').val();
+    console.log("Birthday: " + birthday);
+    // Create the regular expression
+    let birthdayCheck = /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/;
+    // Set style for outline of form field
+// This is a VALID field
+    if (birthdayCheck.test(birthday)) {
+        $('#birthday').removeClass("is-invalid");
+        $('#birthday').addClass("is-valid");
+    }
+        /* etc. */
+// This is an INVALID field
+    else {
+        $('#birthday').removeClass("is-valid");
+        $('#birthday').addClass("is-invalid");
+        IsValid = false;
+    }
+
+    if (IsValid){
+        let url = "api/name_list_edit";
+        let dataToServer = { firstName : firstName, lastName : lastName, email : email, phone : phone, birthday : birthday};
+        console.log(dataToServer);
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: JSON.stringify(dataToServer),
+            success: function(dataFromServer) {
+                console.log(dataFromServer);
+            },
+            contentType: "application/json",
+            dataType: 'text' // Could be JSON or whatever too
+        },
+            $('#myModal').modal('hide'),
+            window.location.reload(true))
+    }
+}
+
+// There's a button in the form with the ID "addItem"
+// Associate the function showDialogAdd with it.
+let saveChangesButton = $('#saveChanges');
+saveChangesButton.on("click", saveChanges);

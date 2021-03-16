@@ -1,5 +1,6 @@
-<html lang="en">
+<!DOCTYPE html>
 
+<html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -16,7 +17,17 @@
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cosmo/bootstrap.min.css">
 
-    <title>Index Page</title>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.6/dropzone.css"
+          crossorigin="anonymous" />
+    <title>Form Demo</title>
+
+    <style>
+        form {
+            /* This adds some space under each form, for visual separation. */
+            margin-bottom: 35px;
+        }
+    </style>
 </head>
 
 <body>
@@ -26,8 +37,8 @@
     <a class="navbar-brand" href="#">Simpson College</a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            <li class="nav-item">
+                <a class="nav-link" href="index.html">Home</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="api/name_list_get">Name List JSON</a>
@@ -35,16 +46,26 @@
             <li class="nav-item">
                 <a class="nav-link" href="name_list.html">Name List</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="form_demo.html">Form Demo</a>
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Form Demo <span class="sr-only">(current)</span></a>
             </li>
         </ul>
     </div>
 </nav>
 
 <div class="container">
-    <h1>Joe McNally's Index Page for CIS 320 Work</h1>
-    <p>Hi</p>
+
+    <!-- This is the important stuff -->
+    <h2>Meme Generator</h2>
+    <p><b>Enter Your Message</b></p>
+    <form action= "meme" method="get">
+        <!-- A label isn't necessary for this to work, but it allows vision-impaired people
+             and even computers to get what a field is. Otherwise it is just an empty box.
+             Get in the habit to add these to all forms, so you can get more customers. -->
+        <label for="message">Message:</label>
+        <input name="message" type="text" id="message" />
+        <input type="submit">
+    </form>
 </div>
 
 <!-- Load JavaScript -->
@@ -54,5 +75,8 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.6/min/dropzone.min.js"
+        crossorigin="anonymous"></script>
+<script type="text/javascript" src="js/form_demo.js"></script>
 </body>
 </html>

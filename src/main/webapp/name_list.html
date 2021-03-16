@@ -31,17 +31,14 @@
                 <a class="nav-link" href="index.html">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="javascript_assignment.html">Javascript Assignment</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="test_javascript.html">Test Javascript</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="api/name_list_get">Name List JSON</a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="name_list.html">Name List
                     <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="form_demo.html">Form Demo</a>
             </li>
         </ul>
     </div>
@@ -79,29 +76,42 @@
 </div>
 
 <!-- This is a hidden "pop up" window that we'll use to enter new data -->
-<div class="modal fade" id="myModal">
+<div class="modal fade" tabindex="-1" role="dialog" id="myModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
+                <!-- Window Title -->
+                <h4 class="modal-title">Update Name List</h4>
                 <!-- Close button -->
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <!-- Window Title -->
-                <h4 class="modal-title">Update Name List</h4>
             </div>
             <div class="modal-body">
                 <!-- Form -->
                 <form id="my-form" name="my-form">
                     <div class="form-group">
-                        <label for="firstName">First Name:</label>
                         <input type="hidden" id="id" name="id" class="form-control"><br>
+                        <!-- First Name-->
+                        <label for="firstName">First Name:</label>
                         <input type="text" id="firstName" name="firstName" class="form-control"
                                placeholder="First name"><br>
-                        <input type="text" id="lastName" name="lastName" class="form-control"
+                        <!-- Last Name-->
+                        <label for="lastname">Last Name:</label>
+                        <input type="text" id="lastname" name="lastname" class="form-control"
                                placeholder="Last name"><br>
+                        <!-- Email-->
+                        <label for="email">E-Mail:</label>
                         <input type="email" id="email" name="email" class="form-control"
                                placeholder="Email address"><br>
+                        <!-- Phone-->
+                        <label for="phone">Phone Number:</label>
+                        <input type="text" id="phone" name="phone" class="form-control"
+                               placeholder="Phone number"><br>
+                        <!-- Birthday-->
+                        <label for="birthday">Birthday:</label>
+                        <input type="date" id="birthday" name="birthday" class="form-control"
+                               placeholder="Birthday"><br>
                     </div>
                 </form>
             </div>

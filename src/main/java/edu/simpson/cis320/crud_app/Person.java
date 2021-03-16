@@ -2,8 +2,8 @@ package edu.simpson.cis320.crud_app;
 public class Person {
 
     private int id;
-    private String first;
-    private String last;
+    private String firstName;
+    private String lastName;
     private String phone;
     private String birthday;
     private String email;
@@ -11,11 +11,11 @@ public class Person {
     public int getId() {return id; }
     public void setId(int id) { this.id = id; }
 
-    public String getFirst() { return first; }
-    public void setFirst(String first) { this.first = first; }
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
 
-    public String getLast() { return last; }
-    public void setLast(String last) { this.last = last; }
+    public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
 
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
@@ -26,6 +26,4 @@ public class Person {
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 
-    /* Add additional getters and setters for each field.
-       Just follow the same pattern. */
 }
