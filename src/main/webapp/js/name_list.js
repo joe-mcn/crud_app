@@ -94,99 +94,99 @@ function saveChanges(){
     let IsValid = true;
     console.log("Saved Changes")
     //First Name
-    let firstName = $('#firstName').val();
+    let firstName = $('#firstName');
     console.log("First name: " + firstName);
     // Create the regular expression
     let reg = /^[A-Za-z]{1,10}$/;
     // Set style for outline of form field
 // This is a VALID field
-    if (reg.test(firstName)) {
-        $('#firstName').removeClass("is-invalid");
-        $('#firstName').addClass("is-valid");
+    if (reg.test(firstName.val())) {
+        firstName.removeClass("is-invalid");
+        firstName.addClass("is-valid");
     }
     /* etc. */
 // This is an INVALID field
     else {
-        $('#firstName').removeClass("is-valid");
-        $('#firstName').addClass("is-invalid");
+        firstName.removeClass("is-valid");
+        firstName.addClass("is-invalid");
         IsValid = false;
     }
     //Last Name
-    let lastName = $('#lastname').val();
+    let lastName = $('#lastname');
     console.log("Last name: " + lastName);
     // Create the regular expression
     // Set style for outline of form field
 // This is a VALID field
-    if (reg.test(lastName)) {
-        $('#lastname').removeClass("is-invalid");
-        $('#lastname').addClass("is-valid");
+    if (reg.test(lastName.val())) {
+        lastName.removeClass("is-invalid");
+        lastName.addClass("is-valid");
     }
         /* etc. */
 // This is an INVALID field
     else {
-        $('#lastname').removeClass("is-valid");
-        $('#lastname').addClass("is-invalid");
+        lastName.removeClass("is-valid");
+        lastName.addClass("is-invalid");
         IsValid = false;
     }
 
     //Email
-    let email = $('#email').val();
+    let email = $('#email');
     console.log("Email: " + email);
     // Create the regular expression
     let emailCheck = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z]{3})+$/;
     // Set style for outline of form field
 // This is a VALID field
-    if (emailCheck.test(email)) {
-        $('#email').removeClass("is-invalid");
-        $('#email').addClass("is-valid");
+    if (emailCheck.test(email.val())) {
+        email.removeClass("is-invalid");
+        email.addClass("is-valid");
     }
         /* etc. */
 // This is an INVALID field
     else {
-        $('#email').removeClass("is-valid");
-        $('#email').addClass("is-invalid");
+        email.removeClass("is-valid");
+        email.addClass("is-invalid");
         IsValid = false;
     }
     //Phone
-    let phone = $('#phone').val();
+    let phone = $('#phone');
     console.log("Phone: " + phone);
     // Create the regular expression
     let phoneCheck = /^[0-9]{10}$/;
     // Set style for outline of form field
 // This is a VALID field
-    if (phoneCheck.test(phone)) {
-        $('#phone').removeClass("is-invalid");
-        $('#phone').addClass("is-valid");
+    if (phoneCheck.test(phone.val())) {
+        phone.removeClass("is-invalid");
+        phone.addClass("is-valid");
     }
         /* etc. */
 // This is an INVALID field
     else {
-        $('#phone').removeClass("is-valid");
-        $('#phone').addClass("is-invalid");
+        phone.removeClass("is-valid");
+        phone.addClass("is-invalid");
         IsValid = false;
     }
     //Phone
-    let birthday = $('#birthday').val();
+    let birthday = $('#birthday');
     console.log("Birthday: " + birthday);
     // Create the regular expression
     let birthdayCheck = /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/;
     // Set style for outline of form field
 // This is a VALID field
-    if (birthdayCheck.test(birthday)) {
-        $('#birthday').removeClass("is-invalid");
-        $('#birthday').addClass("is-valid");
+    if (birthdayCheck.test(birthday.val())) {
+        birthday.removeClass("is-invalid");
+        birthday.addClass("is-valid");
     }
         /* etc. */
 // This is an INVALID field
     else {
-        $('#birthday').removeClass("is-valid");
-        $('#birthday').addClass("is-invalid");
+        birthday.removeClass("is-valid");
+        birthday.addClass("is-invalid");
         IsValid = false;
     }
 
     if (IsValid){
         let url = "api/name_list_edit";
-        let dataToServer = { firstName : firstName, lastName : lastName, email : email, phone : phone, birthday : birthday};
+        let dataToServer = { firstName : firstName.val(), lastName : lastName.val(), email : email.val(), phone : phone.val(), birthday : birthday.val()};
         console.log(dataToServer);
         $.ajax({
             type: 'POST',
@@ -194,12 +194,13 @@ function saveChanges(){
             data: JSON.stringify(dataToServer),
             success: function(dataFromServer) {
                 console.log(dataFromServer);
+                updateTable();
+
             },
             contentType: "application/json",
             dataType: 'text' // Could be JSON or whatever too
         },
-            $('#myModal').modal('hide'),
-            window.location.reload(true))
+            $('#myModal').modal('hide'))
     }
 }
 

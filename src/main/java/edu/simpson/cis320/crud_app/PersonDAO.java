@@ -47,7 +47,7 @@ public class PersonDAO {
             stmt.setString(4, person.getPhone());
             stmt.setString(5, person.getBirthday());
 
-            // If you had parameters, they would be set wit something like:
+            // If you had parameters, they would be set with something like:
             // stmt.setString(1, "1");
 
             // Execute the SQL and get the results
