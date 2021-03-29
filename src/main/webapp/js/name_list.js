@@ -32,7 +32,7 @@ function updateTable() {
     // Function to call when we are done
     $.getJSON(url, null, function(json_result) {
         //Remove "no data"
-        $('#datatable tr').remove()
+        $('#datatable tbody tr').remove()
         for (let i = 0; i < json_result.length; i++) {
             //Adding the data to table
 
@@ -51,14 +51,40 @@ function updateTable() {
                 +htmlSafe(json_result[i].email)
                 +'</td><td>'
                 +htmlSafe(birthdayString)
-                +'</td></tr>'
+                +'</td>' +
+                '<td>\n' +
+                '  <button type=\'button\' name=\'delete\' class=\'deleteButton btn btn-danger\' value= \'' +json_result[i].id + '\'>\n' +
+                '    Delete\n' +
+                '  </button>\n' +
+                '</td></tr>'
                 );
             }
+        $(".deleteButton").on("click", deleteItem);
         }
     );
 }
 // Call your code.
 updateTable();
+
+function deleteItem(e) {
+    console.log("Delete");
+    console.log(e.target.value);
+
+    let url = "api/name_list_delete";
+    let dataToServer = {id: e.target.value};
+    console.log(dataToServer);
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: JSON.stringify(dataToServer),
+        success: function(dataFromServer) {
+            console.log(dataFromServer);
+            updateTable();
+        },
+        contentType: "application/json",
+        dataType: 'text' // Could be JSON or whatever too
+    })
+}
 
 function showDialogAdd() {
     console.log("ADD ITEM")
@@ -68,21 +94,31 @@ function showDialogAdd() {
 
     // Empty fields
     $('#id').val("");
-    $('#firstName').val("");
-    $('#firstName').removeClass("is-invalid");
-    $('#firstName').removeClass("is-valid");
-    $('#lastname').val("");
-    $('#lastname').removeClass("is-invalid");
-    $('#lastname').removeClass("is-valid");
-    $('#birthday').val("");
-    $('#birthday').removeClass("is-invalid");
-    $('#birthday').removeClass("is-valid");
-    $('#phone').val("");
-    $('#phone').removeClass("is-invalid");
-    $('#phone').removeClass("is-valid");
-    $('#email').val("");
-    $('#email').removeClass("is-invalid");
-    $('#email').removeClass("is-valid");
+    let firstNameField = $('#firstName');
+    let lastNameField = $('#lastname');
+    let birthdayField = $('#birthday');
+    let phoneField = $('#phone');
+    let emailField = $('#email');
+
+    firstNameField.val("");
+    firstNameField.removeClass("is-invalid");
+    firstNameField.removeClass("is-valid");
+    lastNameField.val("");
+    lastNameField.removeClass("is-invalid");
+    lastNameField.removeClass("is-valid");
+    birthdayField.val("");
+    birthdayField.removeClass("is-invalid");
+    birthdayField.removeClass("is-valid");
+    phoneField.val("");
+    phoneField.removeClass("is-invalid");
+    phoneField.removeClass("is-valid");
+    emailField.val("");
+    emailField.removeClass("is-invalid");
+    emailField.removeClass("is-valid");
+
+    $('#myModal').on('shown.bs.modal', function () {
+        firstNameField.focus();
+    });
 }
 
 // There's a button in the form with the ID "addItem"
@@ -151,7 +187,7 @@ function saveChanges(){
     let phone = $('#phone');
     console.log("Phone: " + phone);
     // Create the regular expression
-    let phoneCheck = /^[0-9]{10}$/;
+    let phoneCheck = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
     // Set style for outline of form field
 // This is a VALID field
     if (phoneCheck.test(phone.val())) {
@@ -195,7 +231,7 @@ function saveChanges(){
             success: function(dataFromServer) {
                 console.log(dataFromServer);
                 updateTable();
-
+                $('#myToast').toast('show');
             },
             contentType: "application/json",
             dataType: 'text' // Could be JSON or whatever too
@@ -208,3 +244,11 @@ function saveChanges(){
 // Associate the function showDialogAdd with it.
 let saveChangesButton = $('#saveChanges');
 saveChangesButton.on("click", saveChanges);
+
+$(document).keydown(function(e) {
+    console.log(e.keyCode);
+    if (e.keyCode == 65 && !$('#myModal').is(':visible'))
+    {
+        showDialogAdd();
+    }
+})
