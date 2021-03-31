@@ -52,14 +52,16 @@ function updateTable() {
                 +'</td><td>'
                 +htmlSafe(birthdayString)
                 +'</td>' +
-                '<td>\n' +
+                '<td>'+
+                '  <button type=\'button\' name=\'edit\' class=\'editButton btn btn-primary\' value= \'' +json_result[i].id + '\'>\n' +
+                '    Edit\n' +
                 '  <button type=\'button\' name=\'delete\' class=\'deleteButton btn btn-danger\' value= \'' +json_result[i].id + '\'>\n' +
                 '    Delete\n' +
-                '  </button>\n' +
                 '</td></tr>'
                 );
             }
         $(".deleteButton").on("click", deleteItem);
+        $(".editButton").on("click", editItem);
         }
     );
 }
@@ -84,6 +86,39 @@ function deleteItem(e) {
         contentType: "application/json",
         dataType: 'text' // Could be JSON or whatever too
     })
+}
+
+function editItem(e) {
+    console.log("Edit");
+    console.log("Edit: " + e.target.value);
+
+    // Grab the id from the event
+    let id = e.target.value;
+
+// This next line is fun.
+// "e" is the event of the mouse click
+// "e.target" is what the user clicked on. The button in this case.
+// "e.target.parentNode" is the node that holds the button. In this case, the table cell.
+// "e.target.parentNode.parentNode" is the parent of the table cell. In this case, the table row.
+// "e.target.parentNode.parentNode.querySelectorAll("td")" gets an array of all matching table cells in the row
+// "e.target.parentNode.parentNode.querySelectorAll("td")[0]" is the first cell. (You can grab cells 0, 1, 2, etc.)
+// "e.target.parentNode.parentNode.querySelectorAll("td")[0].innerHTML" is content of that cell. Like "Sam" for example.
+// How did I find this long chain? Just by setting a breakpoint and using the interactive shell in my browser.
+    let first = e.target.parentNode.parentNode.querySelectorAll("td")[1].innerHTML;
+    let last = e.target.parentNode.parentNode.querySelectorAll("td")[2].innerHTML;
+    let email = e.target.parentNode.parentNode.querySelectorAll("td")[4].innerHTML;
+// repeat line above for all the fields we need
+
+    $('#id').val(id); // Yes, now we set and use the hidden ID field
+    $('#firstName').val(first);
+    $('#lastname').val(last);
+    $('#email').val(email);
+
+
+// Etc
+
+// Show the window
+    $('#myModal').modal('show');
 }
 
 function showDialogAdd() {

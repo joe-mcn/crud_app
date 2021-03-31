@@ -75,12 +75,9 @@ public class PersonDAO {
         try {
             // Get our database connection
             conn = DBHelper.getConnection();
-
             // This is a string that is our SQL query.
-            // Update for all our fields
-
+            // Update for all our field
             String sql = "delete from person where id = ?;";
-
             // Create an object with all the info about our SQL statement to run.
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, person.getId());
