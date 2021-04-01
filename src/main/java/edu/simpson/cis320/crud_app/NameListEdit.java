@@ -22,7 +22,7 @@ public class NameListEdit extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         Pattern nameValidationPattern = Pattern.compile("^[A-Za-z]{1,10}$");
-        Pattern phoneValidationPattern = Pattern.compile("^(([0-9]{3}))?[-. ]?([0-9]{3})[-. ]?([0-9]{4})");
+        Pattern phoneValidationPattern = Pattern.compile("^([0-9]{3})?[-. ]?([0-9]{3})[-. ]?([0-9]{4})");
         Pattern birthdayValidationPattern = Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}");
         Pattern emailValidationPattern = Pattern.compile("[a-zA-Z0-9_.+-]+@([a-zA-Z0-9-])+.+([a-zA-Z]{3})");
 
@@ -82,12 +82,10 @@ public class NameListEdit extends HttpServlet {
 
         if (first.find( ) && last.find() && phonematcher.find() && emailmatcher.find() && birthdaymatcher.find()) {
             out.println("success");
+            PersonDAO.addPerson(person);
         } else {
             out.println("error");
         }
-        PersonDAO.addPerson(person);
-
-
     }
 }
 
