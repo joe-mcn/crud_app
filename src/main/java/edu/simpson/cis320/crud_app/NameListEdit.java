@@ -82,7 +82,12 @@ public class NameListEdit extends HttpServlet {
 
         if (first.find( ) && last.find() && phonematcher.find() && emailmatcher.find() && birthdaymatcher.find()) {
             out.println("success");
-            PersonDAO.addPerson(person);
+            if (person.getId() == 0) {
+                PersonDAO.addPerson(person);
+            }
+            else {
+                PersonDAO.editPerson(person);
+            }
         } else {
             out.println("error");
         }

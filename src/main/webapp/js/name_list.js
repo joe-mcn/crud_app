@@ -107,13 +107,37 @@ function editItem(e) {
     let first = e.target.parentNode.parentNode.querySelectorAll("td")[1].innerHTML;
     let last = e.target.parentNode.parentNode.querySelectorAll("td")[2].innerHTML;
     let email = e.target.parentNode.parentNode.querySelectorAll("td")[4].innerHTML;
+    let phone = e.target.parentNode.parentNode.querySelectorAll("td")[3].innerHTML;
+    let birthday = e.target.parentNode.parentNode.querySelectorAll("td")[5].innerHTML;
 // repeat line above for all the fields we need
+    // Regular expression to match phone number pattern:
+// (515) 555-1212
+    let regexp = /\((\d{3})\) (\d{3})-(\d{4})/;
+    let match = phone.match(regexp);
+// Log what we matched
+    console.log("Matches:");
+    console.log(match);
+// We how have a list, 1-3, where each one is part of the phone number.
+// Reformat into 515-555-1212
+    let phoneString = match[1] + "-"+ match[2] + "-" + match[3]
+
+    // Parse date to current time in milliseconds
+    let timestamp = Date.parse(birthday);
+// Made date object out of that time
+    let dateObject = new Date(timestamp);
+// Convert to a full ISO formatted string
+    let fullDateString = dateObject.toISOString();
+// Trim off the time part
+    let shortDateString = fullDateString.split('T')[0];
+    console.log("Test for bday" + shortDateString);
 
     $('#id').val(id); // Yes, now we set and use the hidden ID field
     $('#firstName').val(first);
     $('#lastname').val(last);
     $('#email').val(email);
-
+    $('#phone').val(phoneString);
+    $('#birthday').val(shortDateString);
+    console.log("testing bday again " +shortDateString);
 
 // Etc
 
@@ -257,8 +281,28 @@ function saveChanges(){
 
     if (IsValid){
         let url = "api/name_list_edit";
-        let dataToServer = { firstName : firstName.val(), lastName : lastName.val(), email : email.val(), phone : phone.val(), birthday : birthday.val()};
-        console.log(dataToServer);
+        let dataToServer;
+        let id = $('#id').val()
+        if (id === "") {
+            dataToServer = {
+                firstName: firstName.val(),
+                lastName: lastName.val(),
+                email: email.val(),
+                phone: phone.val(),
+                birthday: birthday.val()
+            };
+            console.log(dataToServer);
+        }
+        else{
+            dataToServer = {
+                firstName: firstName.val(),
+                lastName: lastName.val(),
+                email: email.val(),
+                phone: phone.val(),
+                birthday: birthday.val(),
+                id: id
+            };
+        }
         $.ajax({
             type: 'POST',
             url: url,

@@ -19,6 +19,44 @@ public class PersonDAO {
      * Get a list of the people in the database.
      * @return Returns a list of instances of the People class.
      */
+
+    public static void editPerson(Person person) {
+        log.log(Level.FINE, "Add New Edit");
+
+        // Create an empty linked list to put the people we get from the
+        // database into.
+
+        // Declare our variables
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        // Databases are unreliable. Use some exception handling
+        try {
+            // Get our database connection
+            conn = DBHelper.getConnection();
+            // This is a string that is our SQL query.
+            // Update for all our field
+            String sql = "update person set first=?, last=?, email=?, phone=?, birthday=? where id=?;";
+            // Create an object with all the info about our SQL statement to run.
+            stmt = conn.prepareStatement(sql);
+
+            stmt.setString(1, person.getFirstName());
+            stmt.setString(2, person.getLastName());
+            stmt.setString(3, person.getEmail());
+            stmt.setString(4, person.getPhone());
+            stmt.setString(5, person.getBirthday());
+            stmt.setInt(6, person.getId());
+
+            // Execute the SQL and get the results
+            stmt.executeUpdate();
+        }
+        catch (SQLException se) {
+            log.log(Level.SEVERE, "SQL Error", se );
+        }
+        catch (Exception e) {
+            log.log(Level.SEVERE, "Error", e );
+        }
+    }
     public static void addPerson(Person person){
         log.log(Level.FINE, "Add people");
 
@@ -36,7 +74,6 @@ public class PersonDAO {
 
             // This is a string that is our SQL query.
             // Update for all our fields
-
             String sql = "INSERT INTO person(first, last, email, phone, birthday) VALUES (?, ?, ?, ?, ?);";
 
             // Create an object with all the info about our SQL statement to run.
@@ -53,7 +90,7 @@ public class PersonDAO {
             // Execute the SQL and get the results
             stmt.executeUpdate();
 
-        } catch (SQLException se) {
+            } catch (SQLException se) {
             log.log(Level.SEVERE, "SQL Error", se );
         } catch (Exception e) {
             log.log(Level.SEVERE, "Error", e );
